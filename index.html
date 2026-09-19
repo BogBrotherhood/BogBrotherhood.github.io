@@ -14,6 +14,8 @@
       --text: #e8efe6;
       --muted: #9bb3a4;
       --gold: #e6c84a;
+      --blood: #7a1010;
+      --blood-bright: #d31b1b;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
@@ -37,6 +39,7 @@
     nav { display: flex; gap: 18px; font-family: Arial, sans-serif; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; }
     nav a { color: var(--muted); }
     .hero { text-align: center; padding: 48px 0 36px; }
+    .mark { position: relative; display: inline-block; width: min(560px, 100%); }
     .logo-wrap { position: relative; display: inline-block; }
     .logo-wrap img {
       width: min(280px, 70vw);
@@ -65,9 +68,81 @@
     h1 {
       animation-delay: 2.5s;
       font-family: Impact, "Arial Narrow", sans-serif;
-      font-size: clamp(28px, 6vw, 56px);
+      font-size: clamp(26px, 5.4vw, 56px);
       letter-spacing: .06em; margin-top: 8px; text-transform: uppercase;
+      white-space: nowrap;
+      position: relative;
+      display: inline-block;
+      color: #f3f6f2;
+      background-image: linear-gradient(
+        to bottom,
+        #f3f6f2 0 55%,
+        var(--blood-bright) 68%,
+        var(--blood) 100%
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
+    h1::before,
+    h1::after {
+      content: "";
+      position: absolute;
+      left: 2%;
+      right: 2%;
+      top: 92%;
+      height: 70px;
+      pointer-events: none;
+      opacity: 0;
+      z-index: 2;
+    }
+    h1::before {
+      background:
+        radial-gradient(6px 22px at 4% 0, var(--blood-bright) 42%, transparent 43%),
+        radial-gradient(9px 40px at 12% 0, var(--blood) 42%, transparent 43%),
+        radial-gradient(5px 28px at 20% 0, var(--blood-bright) 42%, transparent 43%),
+        radial-gradient(11px 52px at 30% 0, var(--blood) 42%, transparent 43%),
+        radial-gradient(7px 34px at 40% 0, var(--blood-bright) 42%, transparent 43%),
+        radial-gradient(9px 44px at 50% 0, var(--blood) 42%, transparent 43%),
+        radial-gradient(6px 26px at 60% 0, var(--blood-bright) 42%, transparent 43%),
+        radial-gradient(10px 48px at 70% 0, var(--blood) 42%, transparent 43%),
+        radial-gradient(7px 32px at 80% 0, var(--blood-bright) 42%, transparent 43%),
+        radial-gradient(9px 42px at 90% 0, var(--blood) 42%, transparent 43%),
+        radial-gradient(5px 24px at 97% 0, var(--blood-bright) 42%, transparent 43%);
+      animation: drip 2.2s ease 5.4s forwards;
+    }
+    h1::after {
+      background:
+        radial-gradient(4px 18px at 10% 8px, var(--blood-bright) 40%, transparent 41%),
+        radial-gradient(5px 32px at 28% 6px, #4a0000 40%, transparent 41%),
+        radial-gradient(5px 42px at 48% 10px, var(--blood) 40%, transparent 41%),
+        radial-gradient(4px 22px at 68% 8px, var(--blood-bright) 40%, transparent 41%),
+        radial-gradient(5px 36px at 88% 10px, var(--blood) 40%, transparent 41%);
+      animation: drip2 2.8s ease 5.8s forwards;
+    }
+    .claws {
+      position: absolute;
+      inset: -2% -4% 8%;
+      width: 108%;
+      height: 92%;
+      pointer-events: none;
+      z-index: 4;
+      opacity: 0;
+      animation: clawsIn .28s ease 5.15s forwards, clawsOut 1.2s ease 6.35s forwards;
+    }
+    .claws path {
+      fill: none;
+      stroke: #2a0707;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-dasharray: 900;
+      stroke-dashoffset: 900;
+      animation: draw .45s ease forwards;
+    }
+    .claws path:nth-child(1) { animation-delay: 5.15s; }
+    .claws path:nth-child(2) { animation-delay: 5.2s; stroke-width: 1.6; stroke: #8a1414; }
+    .claws path:nth-child(3) { animation-delay: 5.25s; }
+    .claws path:nth-child(4) { animation-delay: 5.3s; stroke-width: 1.4; stroke: #5a0a0a; }
     .tag { animation-delay: 2.8s; font-size: clamp(18px, 3vw, 26px); color: #c9d9cc; margin-top: 10px; font-style: italic; }
     .where { animation-delay: 3.1s; margin-top: 10px; color: var(--muted); font-family: Arial, sans-serif; letter-spacing: .08em; text-transform: uppercase; font-size: 12px; }
     .cta { animation-delay: 3.3s; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 26px; }
@@ -143,14 +218,26 @@
       from { opacity: 0; transform: translateY(14px); }
       to { opacity: 1; transform: translateY(0); }
     }
+    @keyframes clawsIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes clawsOut { from { opacity: 1; } to { opacity: 0; } }
+    @keyframes draw { to { stroke-dashoffset: 0; } }
+    @keyframes drip {
+      from { opacity: 0; transform: translateY(-10px) scaleY(.4); }
+      to { opacity: 1; transform: translateY(8px) scaleY(1.05); }
+    }
+    @keyframes drip2 {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: .95; transform: translateY(16px); }
+    }
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
-      .logo-wrap img, .fog, .ticker, h1, .tag, .where, .cta, .tools, .stat { animation: none; }
+      .logo-wrap img, .fog, .ticker, h1, .tag, .where, .cta, .tools, .stat, .claws, .claws path, h1::before, h1::after { animation: none; }
       .btn, .tool, a.corp { transition: none; }
     }
     @media (max-width: 720px) {
       header { flex-direction: column; align-items: flex-start; }
       .stats, .corps { grid-template-columns: 1fr 1fr; }
+      h1 { white-space: normal; }
     }
   </style>
 </head>
@@ -170,14 +257,22 @@
     </header>
 
     <div class="hero">
-      <div class="logo-wrap">
-        <img src="https://images.evetech.net/alliances/99014163/logo?size=512" alt="Bog Brotherhood logo" />
-        <div class="fog fog-l"></div>
-        <div class="fog fog-c"></div>
-        <div class="fog fog-r"></div>
+      <div class="mark">
+        <div class="logo-wrap">
+          <img src="https://images.evetech.net/alliances/99014163/logo?size=512" alt="Bog Brotherhood logo" />
+          <div class="fog fog-l"></div>
+          <div class="fog fog-c"></div>
+          <div class="fog fog-r"></div>
+        </div>
+        <div class="ticker">ALLIANCE &lt;BBR&gt;</div>
+        <h1>The swamp has teeth</h1>
+        <svg class="claws" viewBox="0 0 560 520" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M18 12 L 548 500" />
+          <path d="M70 4 L 556 470" />
+          <path d="M-6 58 L 520 516" />
+          <path d="M108 0 L 560 448" />
+        </svg>
       </div>
-      <div class="ticker">ALLIANCE &lt;BBR&gt;</div>
-      <h1>The swamp has teeth</h1>
       <div class="tag">Hunting alliance. No throne. Just the hunt.</div>
       <div class="where">Outer Ring for the long grass. Curse for the old blood.</div>
       <div class="cta">
@@ -186,7 +281,7 @@
         <a class="btn ghost" href="https://zkillboard.com/alliance/99014163/" target="_blank" rel="noopener">zKillboard</a>
       </div>
       <div class="tools">
-        <a class="tool" href="https://eveeye.com/?m=Regions&o=sector_none,tag_none,etag_sig,con_none,thera,node_none,sub_con,nodeout_wht,dark" target="_blank" rel="noopener">EVEEye</a>
+        <a class="tool" href="https://eveeye.com/?m=Regions&amp;o=sector_none,tag_none,etag_sig,con_none,thera,node_none,sub_con,nodeout_wht,dark" target="_blank" rel="noopener">EVEEye</a>
         <a class="tool" href="https://evemaps.dotlan.net/jump" target="_blank" rel="noopener">Jump planner</a>
         <a class="tool" href="https://adashboard.info/intel" target="_blank" rel="noopener">D-scan</a>
         <a class="tool" href="https://janice.e-351.com/" target="_blank" rel="noopener">Appraisal</a>
@@ -258,7 +353,7 @@
 
     <footer>
       <div class="foot-tools">
-        <a href="https://eveeye.com/?m=Regions&o=sector_none,tag_none,etag_sig,con_none,thera,node_none,sub_con,nodeout_wht,dark" target="_blank" rel="noopener">EVEEye</a>
+        <a href="https://eveeye.com/?m=Regions&amp;o=sector_none,tag_none,etag_sig,con_none,thera,node_none,sub_con,nodeout_wht,dark" target="_blank" rel="noopener">EVEEye</a>
         <a href="https://evemaps.dotlan.net/jump" target="_blank" rel="noopener">Jump planner</a>
         <a href="https://adashboard.info/intel" target="_blank" rel="noopener">D-scan</a>
         <a href="https://janice.e-351.com/" target="_blank" rel="noopener">Appraisal</a>
